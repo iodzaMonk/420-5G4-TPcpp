@@ -94,9 +94,55 @@ string Book::toString() const
 
 string Book::toFileFormat() const
 {
-    return string();
+    // stringstream to easily format the one line cleanly
+    std::stringstream ss;
+    ss << getTitle() << "|" << getAuthor() << "|" << getISBN() << 
+    "|" << getAvailability() << "|" << getBorrowerId();
+    return ss.str();
 }
 
 void Book::fromFileFormat(const string &line)
 {
+    // clear all the values first before repopulating them back
+    this->title.clear();
+    this->author.clear();
+    this->isbn.clear();
+    this->borrowerId.clear();
+
+    // counter to track which field to populate
+    int counter = 0;
+    for (char c : line) {
+        if (c == '|') {
+            counter++;
+        } else {
+            switch (counter)
+            {
+            case 0:
+                setTitle(getTitle() + c);
+                break;
+            
+            case 1:
+                setAuthor(getAuthor() + c);
+                break;
+
+            case 2:
+                setISBN(getISBN() + c);
+                break;
+
+            case 3:
+                if (c == '0') {
+                    setAvailability(false);
+                } else {
+                    setAvailability(true);
+                }
+                break;
+
+            case 4:
+                setBorrowerId(getBorrowerId() + c);
+                break;
+            default:
+                break;
+            }
+        }
+    }
 }
