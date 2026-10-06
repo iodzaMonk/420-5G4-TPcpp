@@ -1,5 +1,6 @@
 #include "book.h"
 #include <iostream>
+#include <sstream>
 
 Book::Book()
 {
@@ -7,6 +8,10 @@ Book::Book()
 
 Book::Book(const string &title, const string &author, const string &isbn)
 {
+    this->title = title;
+    this->author = author;
+    this->isbn = isbn;
+    this->isAvailable = true;
 }
 
 string Book::getTitle() const
@@ -59,22 +64,32 @@ void Book::setBorrowerId(const string &id)
     this->borrowerId = id;
 }
 
+// checks out the book
 void Book::checkOut(const string &borrowerId)
 {
-
+    this->borrowerId = borrowerId;
+    this->isAvailable = false;
 }
 
+// returns the book, makes it available
 void Book::returnBook()
 {
+    this->borrowerId.clear();
+    this->isAvailable = true;
 }
 
 // prints the details of the book
 string Book::toString() const
 {
-    cout << "Titre: " << getTitle() << "\n";
-    cout << "Auteur: " << getAuthor() << "\n";
-    cout << "ISBN: " << getISBN() << "\n";
-    cout << "Statu: " << getAvailability() << "\n";
+    
+    // using stringstream to save multiple string to one variable
+    std::stringstream ss;
+    ss << "Titre: " << getTitle() << "\n"
+    << "Auteur: " << getAuthor() << "\n"
+    << "ISBN: " << getISBN() << "\n"
+    << "Statu: " << getAvailability() << "\n";
+
+    return ss.str();
 }
 
 string Book::toFileFormat() const
