@@ -179,15 +179,23 @@ int main(int argc, char* argv[]) {
             
             case 7: { // Add User
                 string name = getInput("Entrez le nom de l'utilisateur : ");
-                string userId = getInput("Entrez l'ID de l'utilisateur : ");
                 
-                if (library.findUserById(userId)) {
-                    cout << "Erreur : Un utilisateur avec l'ID " << userId << " existe déjà.\n";
+                // get last user
+                User* lastUser = library.getLastUser();
+                string stringId;
+
+                if (lastUser != nullptr) {
+                    // collect digits after USR
+                    int userId = stoi(lastUser->getUserId().substr(3));
+                    userId++;
+                    stringId = "USR" + ((userId < 100) ? ((userId >= 10) ? "0" + to_string(userId) : "00" + to_string(userId)) : to_string(userId));
                 } else {
-                    User newUser(name, userId);
-                    library.addUser(newUser);
-                    cout << "Utilisateur ajouté avec succès !\n";
+                    // first default user
+                    stringId = "USR001";
                 }
+                User newUser(name, stringId);               
+                library.addUser(newUser);
+                cout << "Utilisateur ajouté avec succès !\n";
                 pauseForInput();
                 break;
             }

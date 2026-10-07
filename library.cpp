@@ -114,6 +114,17 @@ vector<User*> Library::getAllUsers() {
     }
     return allUsers;
 }
+// get last user
+User *Library::getLastUser()
+{
+    vector<User*> allUsers = getAllUsers();
+    if (allUsers.size() > 0) {
+        User* lastUser = allUsers.back();
+        return lastUser;
+    }
+
+    return nullptr;
+}
 
 // Check out book
 bool Library::checkOutBook(const string& isbn, const string& userId) {
