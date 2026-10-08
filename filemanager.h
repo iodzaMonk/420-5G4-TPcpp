@@ -11,10 +11,11 @@ class FileManager {
 private:
     string booksFileName;
     string usersFileName;
+    string logFileName;
 
 public:
     // Constructor
-    FileManager(const string& booksFile, const string& usersFile);
+    FileManager(const string& booksFile, const string& usersFile, const string& logsFile);
     
     // File operations
     bool saveLibraryData(Library& library);
@@ -25,6 +26,11 @@ public:
     bool saveUsersToFile(Library& library);
     bool loadBooksFromFile(Library& library);
     bool loadUsersFromFile(Library& library);
+    void writeLogs(string action, User user);
+    void writeLogs(string action, Book& book);
+    void writeLogs(string action);
+    _Put_time<char> getCurrentTime();
+    stringstream readFile(string FileName);
     
     // Utility methods
     bool fileExists(const string& filename);

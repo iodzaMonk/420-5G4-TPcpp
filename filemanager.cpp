@@ -1,13 +1,17 @@
 #include <fstream>
 #include <iostream>
 #include <filesystem>
+// TIME INCLUDES
+#include <iostream>
+#include <chrono>
+#include <iomanip>
 #include "filemanager.h"
 
 using namespace std;
 
 // Constructor
-FileManager::FileManager(const string& booksFile, const string& usersFile)
-    : booksFileName(booksFile), usersFileName(usersFile) {}
+FileManager::FileManager(const string& booksFile, const string& usersFile, const string& logsFile)
+    : booksFileName(booksFile), usersFileName(usersFile), logFileName(logsFile) {}
 
 // Save all library data
 bool FileManager::saveLibraryData(Library& library) {
@@ -107,6 +111,68 @@ bool FileManager::loadUsersFromFile(Library& library) {
 bool FileManager::fileExists(const string& filename) {
     ifstream file(filename);
     return file.good();
+}
+
+void FileManager::writeLogs(string action, User user) {
+    stringstream ss;
+    ss = readFile(logFileName);
+    ofstream file(logFileName);
+    // put old content
+    file << ss.str();
+    // put new content
+    file << getCurrentTime() << " - [" << action << "] " << user.toFileFormat() << "\n";
+    file.close();
+}
+
+void FileManager::writeLogs(string action, Book &book)
+{
+    stringstream ss;
+    ss = readFile(logFileName);
+    ofstream file(logFileName);
+    // put old content
+    file << ss.str();
+    // put new content
+    file << getCurrentTime() << " - [" << action << "] " << book.toFileFormat() << "\n";
+    file.close();
+}
+
+void FileManager::writeLogs(string action)
+{
+    stringstream ss;
+    ss = readFile(logFileName);
+    ofstream file(logFileName);
+    // put old content
+    file << ss.str();
+    // put new content
+    file << getCurrentTime() << " - [" << action << "] " << "\n";
+    file.close();
+}
+
+// reads the file, that way the information of the file stays safe
+stringstream FileManager::readFile(string fileName) {
+    ifstream file(fileName);
+
+    string line;
+    stringstream ss;
+    while (getline(file, line)) {
+        ss << line << '\n';
+    }
+
+    file.close();
+
+    return ss;
+}
+
+// get the time right now
+_Put_time<char> FileManager::getCurrentTime() {
+
+    auto now = chrono::system_clock::now();
+
+    time_t currentTime = chrono::system_clock::to_time_t(now);
+
+    tm* localTime = localtime(&currentTime);
+
+    return put_time(localTime, "%Y-%m-%d %H:%M:%S");
 }
 
 // Create backup
