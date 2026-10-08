@@ -15,7 +15,12 @@ FileManager::FileManager(const string& booksFile, const string& usersFile, const
 
 // Save all library data
 bool FileManager::saveLibraryData(Library& library) {
-    return saveBooksToFile(library) && saveUsersToFile(library);
+    if (booksFileName.size() && usersFileName.size()) {
+        return saveBooksToFile(library) && saveUsersToFile(library);
+    } else {
+        cout << "Aucun répertoire de données fourni: les données ne seront pas sauvegardées.\n";
+        return false;
+    }
 }
 
 // Load all library data
