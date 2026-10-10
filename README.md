@@ -6,9 +6,10 @@
 ## Gestion des Données
 - [x] Tri des résultats par titre, auteur pour l’affichage (utilisation de la fonction de tri de la STL).
 
-## &#x2611; La fonctionnalité journal d’activités.
 
-## &#x2611; Corriger le bug
+## Autre fonctionalités
+- [x] La fonctionnalité journal d’activités.
+- [x] Corriger le bug.
 
 
 ## Question 1 : C++
